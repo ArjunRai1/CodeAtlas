@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/codeatlas
+    username: codeatlas
+    password: codeatlas
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
