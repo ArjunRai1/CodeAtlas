@@ -1,5 +1,6 @@
 package com.codeatlas.auth.config;
 
+import com.codeatlas.auth.service.PendingRegistration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
