@@ -15,12 +15,14 @@ public class AuthService {
     private final PendingRegistrationService pendingRegistrationService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    public AuthService(OtpGenerator otpGenerator, PendingRegistrationService pendingRegistrationService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(OtpGenerator otpGenerator, PendingRegistrationService pendingRegistrationService, UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.otpGenerator = otpGenerator;
         this.pendingRegistrationService = pendingRegistrationService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     public void register(RegisterRequest request) {
@@ -34,5 +36,6 @@ public class AuthService {
         registration.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         registration.setOtpHash(passwordEncoder.encode(otp));
         pendingRegistrationService.save(registration);
+        emailService.sendRegistrationOtp(normalizedEmail, otp);
     }
 }
