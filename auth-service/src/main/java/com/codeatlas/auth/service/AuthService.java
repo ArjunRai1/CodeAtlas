@@ -1,18 +1,19 @@
 package com.codeatlas.auth.service;
 
+import com.codeatlas.auth.dto.LoginRequest;
 import com.codeatlas.auth.dto.RegisterRequest;
 import com.codeatlas.auth.dto.VerifyRegistrationRequest;
 import com.codeatlas.auth.entity.User;
 import com.codeatlas.auth.exception.DuplicateEmailException;
 import com.codeatlas.auth.exception.InvalidOtpException;
 import com.codeatlas.auth.exception.RegistrationExpiredException;
+import com.codeatlas.auth.exception.InvalidCredentialsException;
 import com.codeatlas.auth.repository.UserRepository;
 import com.codeatlas.auth.utils.OtpGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -57,4 +58,11 @@ public class AuthService {
         pendingRegistrationService.delete(normalizedEmail);
     }
 
+    public void login(LoginRequest request){
+        String normalizedEmail = request.getEmail().trim().toLowerCase(Locale.ROOT);
+        User user = userRepository.findByEmail(normalizedEmail).orElseThrow(()-> new InvalidCredentialsException("Invalid user"));
+        if(!passwordEncoder.matches(passwordEncoder.encode(request.getPassword()), registration.getOtpHash())) {
+            throw new InvalidCredentialsException("Invalid Credentials");
+        }
+    }
 }

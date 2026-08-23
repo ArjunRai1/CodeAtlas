@@ -24,3 +24,6 @@ codeatlas:
   auth:
     pending-registration:
       ttl: ${PENDING_REGISTRATION_TTL}
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration: ${JWT_EXPIRATION}
