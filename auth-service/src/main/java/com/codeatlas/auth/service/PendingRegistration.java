@@ -9,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PendingRegistration {
     private String email;
-    private String password;
+    private String passwordHash;
     private String otpHash;
 }
