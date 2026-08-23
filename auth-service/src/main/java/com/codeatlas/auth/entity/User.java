@@ -28,9 +28,6 @@ public class User {
     @Column(nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false)
-    private String status;
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
