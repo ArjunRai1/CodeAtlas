@@ -1,7 +1,10 @@
 package com.codeatlas.auth.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.security.SecureRandom;
 
+@Component
 public class OtpGenerator {
     private static final SecureRandom RANDOM = new SecureRandom();
 
