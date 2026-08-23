@@ -27,7 +27,7 @@ public class PendingRegistrationService {
         redisTemplate.opsForValue().set(key, registration, ttl);
     }
 
-    public Optional<PendingRegistration> get(String email) {
+    public Optional<PendingRegistration> getEmail(String email) {
         String key = getKey("registration", email);
         PendingRegistration registration = redisTemplate.opsForValue().get(key);
         return Optional.ofNullable(registration);

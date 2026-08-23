@@ -1,6 +1,7 @@
 package com.codeatlas.auth.controller;
 
 import com.codeatlas.auth.dto.RegisterRequest;
+import com.codeatlas.auth.dto.VerifyRegistrationRequest;
 import com.codeatlas.auth.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,11 @@ public class AuthController {
     public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequest request) {
         authService.register(request);
         return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping("/register/verify")
+    public ResponseEntity<Void> verify(@Valid @RequestBody VerifyRegistrationRequest request) {
+        authService.verify(request);
+        return ResponseEntity.noContent().build();
     }
 }
