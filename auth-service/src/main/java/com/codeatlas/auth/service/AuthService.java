@@ -58,11 +58,11 @@ public class AuthService {
         pendingRegistrationService.delete(normalizedEmail);
     }
 
-    public void login(LoginRequest request){
-        String normalizedEmail = request.getEmail().trim().toLowerCase(Locale.ROOT);
-        User user = userRepository.findByEmail(normalizedEmail).orElseThrow(()-> new InvalidCredentialsException("Invalid user"));
-        if(!passwordEncoder.matches(passwordEncoder.encode(request.getPassword()), registration.getOtpHash())) {
-            throw new InvalidCredentialsException("Invalid Credentials");
-        }
-    }
+//    public void login(LoginRequest request){
+//        String normalizedEmail = request.getEmail().trim().toLowerCase(Locale.ROOT);
+//        User user = userRepository.findByEmail(normalizedEmail).orElseThrow(()-> new InvalidCredentialsException("Invalid user"));
+//        if(!passwordEncoder.matches(passwordEncoder.encode(request.getPassword()), registration.getOtpHash())) {
+//            throw new InvalidCredentialsException("Invalid Credentials");
+//        }
+//    }
 }
