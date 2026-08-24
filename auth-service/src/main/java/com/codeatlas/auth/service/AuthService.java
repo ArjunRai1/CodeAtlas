@@ -1,6 +1,7 @@
 package com.codeatlas.auth.service;
 
 import com.codeatlas.auth.dto.LoginRequest;
+import com.codeatlas.auth.dto.LoginResponse;
 import com.codeatlas.auth.dto.RegisterRequest;
 import com.codeatlas.auth.dto.VerifyRegistrationRequest;
 import com.codeatlas.auth.entity.User;
@@ -9,6 +10,7 @@ import com.codeatlas.auth.exception.InvalidOtpException;
 import com.codeatlas.auth.exception.RegistrationExpiredException;
 import com.codeatlas.auth.exception.InvalidCredentialsException;
 import com.codeatlas.auth.repository.UserRepository;
+import com.codeatlas.auth.utils.JwtService;
 import com.codeatlas.auth.utils.OtpGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,15 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final JwtService jwtService;
 
-    public AuthService(OtpGenerator otpGenerator, PendingRegistrationService pendingRegistrationService, UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
+    public AuthService(OtpGenerator otpGenerator, PendingRegistrationService pendingRegistrationService, UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, JwtService jwtService) {
         this.otpGenerator = otpGenerator;
         this.pendingRegistrationService = pendingRegistrationService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.jwtService = jwtService;
     }
 
     public void register(RegisterRequest request) {
@@ -58,11 +62,13 @@ public class AuthService {
         pendingRegistrationService.delete(normalizedEmail);
     }
 
-//    public void login(LoginRequest request){
-//        String normalizedEmail = request.getEmail().trim().toLowerCase(Locale.ROOT);
-//        User user = userRepository.findByEmail(normalizedEmail).orElseThrow(()-> new InvalidCredentialsException("Invalid user"));
-//        if(!passwordEncoder.matches(passwordEncoder.encode(request.getPassword()), registration.getOtpHash())) {
-//            throw new InvalidCredentialsException("Invalid Credentials");
-//        }
-//    }
+    public LoginResponse login(LoginRequest request) {
+        String normalizedEmail = request.getEmail().trim().toLowerCase(Locale.ROOT);
+        User user = userRepository.findByEmail(normalizedEmail).orElseThrow(() -> new InvalidCredentialsException("Invalid credentials"));
+        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+            throw new InvalidCredentialsException("Invalid Credentials");
+        }
+        String token = jwtService.generateToken(normalizedEmail);
+        return new LoginResponse(token);
+    }
 }

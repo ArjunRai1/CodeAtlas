@@ -1,5 +1,7 @@
 package com.codeatlas.auth.controller;
 
+import com.codeatlas.auth.dto.LoginRequest;
+import com.codeatlas.auth.dto.LoginResponse;
 import com.codeatlas.auth.dto.RegisterRequest;
 import com.codeatlas.auth.dto.VerifyRegistrationRequest;
 import com.codeatlas.auth.service.AuthService;
@@ -30,5 +32,11 @@ public class AuthController {
     public ResponseEntity<Void> verify(@Valid @RequestBody VerifyRegistrationRequest request) {
         authService.verify(request);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        System.out.println(">>> LOGIN CONTROLLER REACHED");
+        return ResponseEntity.ok(authService.login(request));
     }
 }
