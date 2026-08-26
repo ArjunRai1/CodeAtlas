@@ -15,11 +15,17 @@ spring:
           auth: true
           starttls:
             enable: true
-
   data:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+
+github:
+  oauth:
+    client-id: ${GITHUB_CLIENT_ID}
+    client-secret: ${GITHUB_CLIENT_SECRET}
+    redirect-uri: http://localhost:8080/api/auth/github/callback
+
 codeatlas:
   auth:
     pending-registration:
